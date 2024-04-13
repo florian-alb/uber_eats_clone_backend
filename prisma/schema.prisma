@@ -107,4 +107,5 @@ enum Role {
   USER
   RESTAURANT
   ADMIN
+  BANNED
 }
