@@ -6,9 +6,6 @@ const productClient = new PrismaClient().product
 export const getAllProducts = async (req: any, res: any) => {
     try {
         const allProducts = await productClient.findMany({
-            include : {
-                category: true
-            }
         })
         res.status(200).json({data: allProducts})
     } catch (e) {
@@ -24,9 +21,6 @@ export const getProductById = async (req: any, res: any) => {
             where: {
                 id: productId,
             },
-            include : {
-                category: true
-            }
         })
         if (product) {
             res.status(200).json({data: product});

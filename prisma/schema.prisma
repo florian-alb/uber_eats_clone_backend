@@ -15,36 +15,36 @@ datasource db {
 }
 
 model Shop {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name      String    @unique @db.VarChar(255)
-  address   Address   @relation(fields: [addressId], references: [id])
-  reviews   Review[]
-  products  Product[]
-  image     String
-  orders    Order[]
-  addressId String    @db.Uuid
-  User      User[]
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String    @unique @db.VarChar(255)
+  address    Address?  @relation(fields: [addressId], references: [id])
+  reviews    Review[]
+  products   Product[]
+  image      String?
+  orders     Order[]
+  addressId  String?   @db.Uuid
+  User       User[]
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?   @db.Uuid
 }
 
 model Product {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String    @db.VarChar(255)
-  image       String
-  description String
-  category    Category? @relation(fields: [categoryId], references: [id])
-  categoryId  String?   @db.Uuid
-  shop        Shop?     @relation(fields: [shopId], references: [id])
-  shopId      String?   @db.Uuid
-  menu        Menu?     @relation(fields: [menuId], references: [id])
-  menuId      String?   @db.Uuid
-  Order       Order?    @relation(fields: [orderId], references: [id])
-  orderId     String?   @db.Uuid
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String  @db.VarChar(255)
+  image       String?
+  description String?
+  shop        Shop?   @relation(fields: [shopId], references: [id])
+  shopId      String? @db.Uuid
+  menu        Menu?   @relation(fields: [menuId], references: [id])
+  menuId      String? @db.Uuid
+  Order       Order?  @relation(fields: [orderId], references: [id])
+  orderId     String? @db.Uuid
 }
 
 model Menu {
   id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name     String    @db.VarChar(255)
-  image    String
+  image    String?
   products Product[]
 }
 
@@ -76,10 +76,10 @@ model Address {
 }
 
 model Category {
-  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name     String    @db.VarChar(255)
-  products Product[]
-  icon     String
+  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String @db.VarChar(255)
+  shop Shop[]
+  icon String
 }
 
 model Order {
