@@ -27,7 +27,7 @@ export const getUserById = async (req: any, res: any) => {
             include: {
                 addresses: true,
                 orders: true,
-                restaurant: true,
+                shop: true,
             }
         })
         if (user) {

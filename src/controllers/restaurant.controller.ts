@@ -1,11 +1,11 @@
 import {PrismaClient} from "@prisma/client";
 
-const restaurantClient = new PrismaClient().restaurant
+const shopClient = new PrismaClient().shop
 
 // getAllRestaurants
 export const getAllRestaurants = async (req: any, res: any) => {
     try {
-        const allRestaurant = await restaurantClient.findMany({
+        const allRestaurant = await shopClient.findMany({
             include : {
                 reviews: true,
                 address: true,
@@ -22,7 +22,7 @@ export const getAllRestaurants = async (req: any, res: any) => {
 export const getRestaurantById = async (req: any, res: any) => {
     try {
         const restaurantId = req.params.id;
-        const restaurant = await restaurantClient.findUnique({
+        const restaurant = await shopClient.findUnique({
             where: {
                 id: restaurantId,
             },
@@ -48,7 +48,7 @@ export const getRestaurantById = async (req: any, res: any) => {
 export const createRestaurant = async (req: any, res: any) => {
     try {
         const restaurantData = req.body
-        const restaurant = await restaurantClient.create({
+        const restaurant = await shopClient.create({
             data: restaurantData,
         })
         res.status(201).json({data: restaurant})
@@ -62,7 +62,7 @@ export const updateRestaurant = async (req: any, res: any) => {
     try {
         const restaurantId = req.params.id
         const restaurantData = req.body
-        const restaurant = await restaurantClient.update({
+        const restaurant = await shopClient.update({
             where: {
                 id: restaurantId,
             },
@@ -78,7 +78,7 @@ export const updateRestaurant = async (req: any, res: any) => {
 export const deleteRestaurant = async (req: any, res: any) => {
     try {
         const restaurantId = req.params.id
-        await restaurantClient.delete({
+        await shopClient.delete({
             where: {
                 id: restaurantId,
             }

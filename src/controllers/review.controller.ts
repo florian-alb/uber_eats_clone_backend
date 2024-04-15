@@ -7,7 +7,7 @@ export const getAllReviews = async (req: any, res: any) => {
     try {
         const allReviews = await reviewClient.findMany({
             include : {
-                Restaurant: true,
+                shop: true,
             }
         })
         res.status(200).json({data: allReviews})
@@ -25,7 +25,7 @@ export const getReviewById = async (req: any, res: any) => {
                 id: reviewId,
             },
             include : {
-                Restaurant: true,
+                shop: true,
             }
         })
         if (review) {
