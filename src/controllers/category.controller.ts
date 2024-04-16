@@ -7,7 +7,7 @@ export const getAllCategory = async (req: any, res: any) => {
     try {
         const allCategory = await categoryClient.findMany({
             include : {
-                products: true
+                shop: true
             }
         })
         res.status(200).json({data: allCategory})
@@ -25,7 +25,7 @@ export const getCategoryById = async (req: any, res: any) => {
                 id: categoryId,
             },
             include : {
-                products: true
+                shop: true
             }
         })
         if (category) {
