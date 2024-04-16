@@ -1,11 +1,10 @@
-import {PrismaClient} from "@prisma/client";
+import {prisma} from "./db";
 
-const reviewClient = new PrismaClient().review
 
 // getAllReviews
 export const getAllReviews = async (req: any, res: any) => {
     try {
-        const allReviews = await reviewClient.findMany({
+        const allReviews = await prisma.review.findMany({
             include : {
                 shop: true,
             }
@@ -20,7 +19,7 @@ export const getAllReviews = async (req: any, res: any) => {
 export const getReviewById = async (req: any, res: any) => {
     try {
         const reviewId = req.params.id;
-        const review = await reviewClient.findUnique({
+        const review = await prisma.review.findUnique({
             where: {
                 id: reviewId,
             },
@@ -42,7 +41,7 @@ export const getReviewById = async (req: any, res: any) => {
 export const createReview = async (req: any, res: any) => {
     try {
         const reviewData = req.body
-        const review = await reviewClient.create({
+        const review = await prisma.review.create({
             data: reviewData,
         })
         res.status(201).json({data: review})
@@ -56,7 +55,7 @@ export const updateReview = async (req: any, res: any) => {
     try {
         const reviewId = req.params.id
         const reviewData = req.body
-        const review = await reviewClient.update({
+        const review = await prisma.review.update({
             where: {
                 id: reviewId,
             },
@@ -72,7 +71,7 @@ export const updateReview = async (req: any, res: any) => {
 export const deleteReview = async (req: any, res: any) => {
     try {
         const reviewId = req.params.id
-        await reviewClient.delete({
+        await prisma.review.delete({
             where: {
                 id: reviewId,
             }
