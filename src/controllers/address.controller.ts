@@ -1,12 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
-const addressClient = new PrismaClient().address
+import {prisma} from "./db";
 
 // getAllAddresses
 export const getAllAddresses = async (req: any, res: any) => {
     try {
-        console.log(addressClient)
-        const allAddress = await addressClient.findMany()
+        const allAddress = await prisma.address.findMany()
         res.status(200).json({data: allAddress})
     } catch (e) {
         res.status(501).json({error: e, message: "error during getting the addresss"})
@@ -17,7 +14,7 @@ export const getAllAddresses = async (req: any, res: any) => {
 export const getAddressById = async (req: any, res: any) => {
     try {
         const addressId = req.params.id;
-        const address = await addressClient.findUnique({
+        const address = await prisma.address.findUnique({
             where: {
                 id: addressId,
             }
@@ -36,7 +33,7 @@ export const getAddressById = async (req: any, res: any) => {
 export const createAddress = async (req: any, res: any) => {
     try {
         const addressData = req.body
-        const address = await addressClient.create({
+        const address = await prisma.address.create({
             data: addressData,
         })
         res.status(201).json({data: address})
@@ -50,7 +47,7 @@ export const updateAddress = async (req: any, res: any) => {
     try {
         const addressId = req.params.id
         const addressData = req.body
-        const address = await addressClient.update({
+        const address = await prisma.address.update({
             where: {
                 id: addressId,
             },
@@ -66,7 +63,7 @@ export const updateAddress = async (req: any, res: any) => {
 export const deleteAddress = async (req: any, res: any) => {
     try {
         const addressId = req.params.id
-        await addressClient.delete({
+        await prisma.address.delete({
             where: {
                 id: addressId,
             }

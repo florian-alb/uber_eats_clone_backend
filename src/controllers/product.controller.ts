@@ -1,11 +1,10 @@
-import {PrismaClient} from "@prisma/client";
+import {prisma} from "./db";
 
-const productClient = new PrismaClient().product
 
 // getAllProducts
 export const getAllProducts = async (req: any, res: any) => {
     try {
-        const allProducts = await productClient.findMany({
+        const allProducts = await prisma.product.findMany({
         })
         res.status(200).json({data: allProducts})
     } catch (e) {
@@ -17,7 +16,7 @@ export const getAllProducts = async (req: any, res: any) => {
 export const getProductById = async (req: any, res: any) => {
     try {
         const productId = req.params.id;
-        const product = await productClient.findUnique({
+        const product = await prisma.product.findUnique({
             where: {
                 id: productId,
             },
@@ -36,7 +35,7 @@ export const getProductById = async (req: any, res: any) => {
 export const createProduct = async (req: any, res: any) => {
     try {
         const productData = req.body
-        const product = await productClient.create({
+        const product = await prisma.product.create({
             data: productData,
         })
         res.status(201).json({data: product})
@@ -50,7 +49,7 @@ export const updateProduct = async (req: any, res: any) => {
     try {
         const productId = req.params.id
         const productData = req.body
-        const product = await productClient.update({
+        const product = await prisma.product.update({
             where: {
                 id: productId,
             },
@@ -66,7 +65,7 @@ export const updateProduct = async (req: any, res: any) => {
 export const deleteProduct = async (req: any, res: any) => {
     try {
         const productId = req.params.id
-        await productClient.delete({
+        await prisma.product.delete({
             where: {
                 id: productId,
             }

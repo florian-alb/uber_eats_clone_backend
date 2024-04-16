@@ -1,11 +1,10 @@
-import {PrismaClient} from "@prisma/client";
-
-const menuClient = new PrismaClient().menu
+import {} from "@prisma/client";
+import {prisma} from "./db";
 
 // getAllMenus
 export const getAllMenus = async (req: any, res: any) => {
     try {
-        const allMenus = await menuClient.findMany({
+        const allMenus = await prisma.menu.findMany({
             include : {
                 products: true
             }
@@ -20,7 +19,7 @@ export const getAllMenus = async (req: any, res: any) => {
 export const getMenuById = async (req: any, res: any) => {
     try {
         const menuId = req.params.id;
-        const menu = await menuClient.findUnique({
+        const menu = await prisma.menu.findUnique({
             where: {
                 id: menuId,
             },
@@ -42,7 +41,7 @@ export const getMenuById = async (req: any, res: any) => {
 export const createMenu = async (req: any, res: any) => {
     try {
         const menuData = req.body
-        const menu = await menuClient.create({
+        const menu = await prisma.menu.create({
             data: menuData,
         })
         res.status(201).json({data: menu})
@@ -56,7 +55,7 @@ export const updateMenu = async (req: any, res: any) => {
     try {
         const menuId = req.params.id
         const menuData = req.body
-        const menu = await menuClient.update({
+        const menu = await prisma.menu.update({
             where: {
                 id: menuId,
             },
@@ -72,7 +71,7 @@ export const updateMenu = async (req: any, res: any) => {
 export const deleteMenu = async (req: any, res: any) => {
     try {
         const menuId = req.params.id
-        await menuClient.delete({
+        await prisma.menu.delete({
             where: {
                 id: menuId,
             }
