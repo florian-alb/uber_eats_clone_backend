@@ -1,14 +1,14 @@
 import {PrismaClient} from "@prisma/client";
 
-const categoryClient = new PrismaClient().category
+const prisma = new PrismaClient()
 
 // getAllCategory
 export const getAllCategory = async (req: any, res: any) => {
     try {
-        const allCategory = await categoryClient.findMany({
-            include : {
-                products: true
-            }
+        const allCategory = await prisma.category.findMany({
+           select: {
+               shop: true,
+           }
         })
         res.status(200).json({data: allCategory})
     } catch (e) {
@@ -20,12 +20,12 @@ export const getAllCategory = async (req: any, res: any) => {
 export const getCategoryById = async (req: any, res: any) => {
     try {
         const categoryId = req.params.id;
-        const category = await categoryClient.findUnique({
+        const category = await prisma.category.findUnique({
             where: {
                 id: categoryId,
             },
-            include : {
-                products: true
+            select : {
+                shop: true
             }
         })
         if (category) {
@@ -42,7 +42,7 @@ export const getCategoryById = async (req: any, res: any) => {
 export const createCategory = async (req: any, res: any) => {
     try {
         const categoryData = req.body
-        const category = await categoryClient.create({
+        const category = await prisma.category.create({
             data: categoryData,
         })
         res.status(201).json({data: category})
@@ -56,7 +56,7 @@ export const updateCategory = async (req: any, res: any) => {
     try {
         const categoryId = req.params.id
         const categoryData = req.body
-        const category = await categoryClient.update({
+        const category = await prisma.category.update({
             where: {
                 id: categoryId,
             },
@@ -72,7 +72,7 @@ export const updateCategory = async (req: any, res: any) => {
 export const deleteCategory = async (req: any, res: any) => {
     try {
         const categoryId = req.params.id
-        await categoryClient.delete({
+        await prisma.category.delete({
             where: {
                 id: categoryId,
             }

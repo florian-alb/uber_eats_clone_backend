@@ -5,6 +5,7 @@ const addressClient = new PrismaClient().address
 // getAllAddresses
 export const getAllAddresses = async (req: any, res: any) => {
     try {
+        console.log(addressClient)
         const allAddress = await addressClient.findMany()
         res.status(200).json({data: allAddress})
     } catch (e) {
