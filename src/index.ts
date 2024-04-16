@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+
 import addressRouter from "./router/address.router";
 import categoryRouter from "./router/category.router";
 import menuRouter from "./router/menu.router";
@@ -11,6 +13,7 @@ import userRouter from "./router/user.router";
 
 const app = express()
 const port = process.env.PORT || 8080;
+app.use(cors())
 
 // import Page
 app.use(express.json())

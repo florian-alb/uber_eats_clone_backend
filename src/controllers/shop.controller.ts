@@ -1,11 +1,11 @@
 import {PrismaClient} from "@prisma/client";
 
-const shopClient = new PrismaClient().shop
+const prisma = new PrismaClient()
 
 // getAllShops
 export const getAllShops = async (req: any, res: any) => {
     try {
-        const allShop = await shopClient.findMany({
+        const allShop = await prisma.shop.findMany({
             include : {
                 reviews: true,
                 address: true,
@@ -22,7 +22,7 @@ export const getAllShops = async (req: any, res: any) => {
 export const getShopById = async (req: any, res: any) => {
     try {
         const shopId = req.params.id;
-        const shop = await shopClient.findUnique({
+        const shop = await prisma.shop.findUnique({
             where: {
                 id: shopId,
             },
@@ -49,7 +49,7 @@ export const createShop = async (req: any, res: any) => {
     try {
         const data = req.body
         console.log(data)
-        const shop = await shopClient.create({
+        const shop = await prisma.shop.create({
             data
         })
         res.status(201).json({data: shop})
@@ -63,7 +63,7 @@ export const updateShop = async (req: any, res: any) => {
     try {
         const shopId = req.params.id
         const shopData = req.body
-        const shop = await shopClient.update({
+        const shop = await prisma.shop.update({
             where: {
                 id: shopId,
             },
@@ -79,7 +79,7 @@ export const updateShop = async (req: any, res: any) => {
 export const deleteShop = async (req: any, res: any) => {
     try {
         const shopId = req.params.id
-        await shopClient.delete({
+        await prisma.shop.delete({
             where: {
                 id: shopId,
             }
