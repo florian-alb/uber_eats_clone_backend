@@ -1,11 +1,10 @@
 import {prisma} from "./db";
 
-
 // getAllShops
 export const getAllShops = async (req: any, res: any) => {
     try {
         const allShop = await prisma.shop.findMany({
-            include : {
+            include: {
                 reviews: true,
                 address: true,
                 products: true,
@@ -19,27 +18,25 @@ export const getAllShops = async (req: any, res: any) => {
 
 // getShopById
 export const getShopById = async (req: any, res: any) => {
+    const id = req.params.id;
     try {
-        const shopId = req.params.id;
         const shop = await prisma.shop.findUnique({
             where: {
-                id: shopId,
+                id,
             },
-            include : {
-                reviews: true,
-                address: true,
+            include: {
+                Category: true,
                 products: true,
-                User: true,
-                orders: true
             }
-        })
-        if (shop) {
-            res.status(200).json({data: shop});
-        } else {
-            res.status(404).json({message: `The shop with ID ${shopId} does not exist`});
+        });
+        console.log(shop)
+        if (!shop) {
+            res.status(404).json({message: `The shop with ID ${id} does not exist`});
         }
+        res.status(200).json({data: shop});
     } catch (e) {
-        res.status(500).json({error: e, message: `An error occurred while fetching the shop with ID ${req.params.id}`});
+        console.log(e)
+        res.status(500).json({error: e, message: `An error occurred while fetching the shop with ID ${id}`});
     }
 };
 
