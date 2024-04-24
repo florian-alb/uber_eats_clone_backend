@@ -19,7 +19,7 @@ model Shop {
   reviews    Review[]
   address    Address?  @relation(fields: [addressId], references: [id])
   Category   Category? @relation(fields: [categoryId], references: [id])
-  User       User[]
+  users       User[]
 }
 
 model Product {
@@ -27,6 +27,7 @@ model Product {
   name        String  @db.VarChar(255)
   image       String?
   description String?
+  price       Decimal
   menuId      String? @db.Uuid
   orderId     String? @db.Uuid
   shopId      String? @db.Uuid
