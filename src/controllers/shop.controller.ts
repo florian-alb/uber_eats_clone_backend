@@ -12,7 +12,7 @@ export const getAllShops = async (req: any, res: any) => {
         })
         res.status(200).json({data: allShop})
     } catch (e) {
-        res.status(501).json({error: e, message: "error during getting the shops"})
+        res.status(501).json({error: e, message: `error during getting the shops: ${e.message}`})
     }
 }
 

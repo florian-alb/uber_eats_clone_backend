@@ -4,7 +4,7 @@ import {prisma} from "./db";
 export const getAllCategory = async (req: any, res: any) => {
     try {
         const allCategory = await prisma.category.findMany({
-           select: {
+            include: {
                shop: true,
            }
         })
