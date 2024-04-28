@@ -30,7 +30,6 @@ export const getShopById = async (req: any, res: any) => {
                 reviews: true,
                 address: true,
                 products: true,
-                User: true,
                 orders: true
             }
         })
