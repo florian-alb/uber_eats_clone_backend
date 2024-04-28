@@ -1,4 +1,4 @@
-import {prisma} from "./db";
+import {prisma} from "../../prisma/db";
 
 // getAllCategory
 export const getAllCategory = async (req: any, res: any) => {

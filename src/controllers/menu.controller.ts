@@ -1,5 +1,5 @@
 import {} from "@prisma/client";
-import {prisma} from "./db";
+import {prisma} from "../../prisma/db";
 
 // getAllMenus
 export const getAllMenus = async (req: any, res: any) => {

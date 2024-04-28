@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model Shop {
@@ -19,7 +19,7 @@ model Shop {
   reviews    Review[]
   address    Address?  @relation(fields: [addressId], references: [id])
   Category   Category? @relation(fields: [categoryId], references: [id])
-  users       User[]
+  users      User[]
 }
 
 model Product {
