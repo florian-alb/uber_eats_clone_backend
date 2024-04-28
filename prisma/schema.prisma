@@ -48,7 +48,7 @@ model User {
   email     String    @unique
   name      String
   phone     String
-  passowrd  Bytes[]
+  password  Bytes[]
   money     Decimal?
   role      Role      @default(USER)
   shopId    String?   @db.Uuid
