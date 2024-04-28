@@ -1,12 +1,10 @@
-import {PrismaClient} from "@prisma/client";
-
-const prisma = new PrismaClient()
+import {prisma} from "../../prisma/db";
 
 // getAllShops
 export const getAllShops = async (req: any, res: any) => {
     try {
         const allShop = await prisma.shop.findMany({
-            include : {
+            include: {
                 reviews: true,
                 address: true,
                 products: true,
@@ -14,32 +12,51 @@ export const getAllShops = async (req: any, res: any) => {
         })
         res.status(200).json({data: allShop})
     } catch (e) {
-        res.status(501).json({error: e, message: "error during getting the shops"})
+        res.status(501).json({error: e, message: `error during getting the shops: ${e.message}`})
     }
 }
 
 // getShopById
 export const getShopById = async (req: any, res: any) => {
+    const id = req.params.id;
     try {
-        const shopId = req.params.id;
         const shop = await prisma.shop.findUnique({
             where: {
-                id: shopId,
+                id,
             },
-            include : {
-                reviews: true,
-                address: true,
+            include: {
+                Category: true,
                 products: true,
-                orders: true
             }
-        })
-        if (shop) {
-            res.status(200).json({data: shop});
-        } else {
-            res.status(404).json({message: `The shop with ID ${shopId} does not exist`});
+        });
+        console.log(shop)
+        if (!shop) {
+            res.status(404).json({message: `The shop with ID ${id} does not exist`});
         }
+        res.status(200).json({data: shop});
     } catch (e) {
-        res.status(500).json({error: e, message: `An error occurred while fetching the shop with ID ${req.params.id}`});
+        console.log(e)
+        res.status(500).json({error: e, message: `An error occurred while fetching the shop with ID ${id}`});
+    }
+};
+
+// getShopByCategoryId
+export const getShopByCategoryId = async (req: any, res: any) => {
+    const categoryId = req.params.id;
+    try {
+        const shop = await prisma.shop.findMany({
+            where: {
+                categoryId: categoryId
+            },
+        });
+        console.log(shop)
+        if (!shop) {
+            res.status(404).json({message: `Not found`});
+        }
+        res.status(200).json({data: shop});
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({error: e, message: `An error occurred while fetching the shops for category ${categoryId}`});
     }
 };
 

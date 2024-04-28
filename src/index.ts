@@ -4,11 +4,11 @@ import cors from "cors";
 import addressRouter from "./router/address.router";
 import categoryRouter from "./router/category.router";
 import menuRouter from "./router/menu.router";
-import orderRouter from "./routes/order";
 import productRouter from "./router/product.router";
 import shopRouter from "./router/shop.router";
 import reviewRouter from "./router/review.router";
 import userRouter from "./router/user.router";
+import orderRouter from "./router/order.router";
 
 
 const app = express()

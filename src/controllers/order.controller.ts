@@ -1,14 +1,12 @@
-import {PrismaClient} from "@prisma/client";
-
-const orderClient = new PrismaClient().order
+import {prisma} from "../../prisma/db";
 
 // getAllOrders
 export const getAllOrders = async (req: any, res: any) => {
     try {
-        const allOrders = await orderClient.findMany({
+        const allOrders = await prisma.order.findMany({
             include : {
                 products: true,
-                restaurant: true,
+                shop: true,
                 customer: true
             }
         })
@@ -22,13 +20,13 @@ export const getAllOrders = async (req: any, res: any) => {
 export const getOrderById = async (req: any, res: any) => {
     try {
         const orderId = req.params.id;
-        const order = await orderClient.findUnique({
+        const order = await prisma.order.findUnique({
             where: {
                 id: orderId,
             },
             include : {
                 products: true,
-                restaurant: true,
+                shop: true,
                 customer: true
             }
         })
@@ -46,7 +44,7 @@ export const getOrderById = async (req: any, res: any) => {
 export const createOrder = async (req: any, res: any) => {
     try {
         const orderData = req.body
-        const order = await orderClient.create({
+        const order = await prisma.order.create({
             data: orderData,
         })
         res.status(201).json({data: order})
@@ -60,7 +58,7 @@ export const updateOrder = async (req: any, res: any) => {
     try {
         const orderId = req.params.id
         const orderData = req.body
-        const order = await orderClient.update({
+        const order = await prisma.order.update({
             where: {
                 id: orderId,
             },
@@ -76,7 +74,7 @@ export const updateOrder = async (req: any, res: any) => {
 export const deleteOrder = async (req: any, res: any) => {
     try {
         const orderId = req.params.id
-        await orderClient.delete({
+        await prisma.order.delete({
             where: {
                 id: orderId,
             }
