@@ -1,4 +1,4 @@
-import {prisma} from "./db";
+import {prisma} from "../../prisma/db";
 
 // getAllShops
 export const getAllShops = async (req: any, res: any) => {
@@ -37,6 +37,26 @@ export const getShopById = async (req: any, res: any) => {
     } catch (e) {
         console.log(e)
         res.status(500).json({error: e, message: `An error occurred while fetching the shop with ID ${id}`});
+    }
+};
+
+// getShopByCategoryId
+export const getShopByCategoryId = async (req: any, res: any) => {
+    const categoryId = req.params.id;
+    try {
+        const shop = await prisma.shop.findMany({
+            where: {
+                categoryId: categoryId
+            },
+        });
+        console.log(shop)
+        if (!shop) {
+            res.status(404).json({message: `Not found`});
+        }
+        res.status(200).json({data: shop});
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({error: e, message: `An error occurred while fetching the shops for category ${categoryId}`});
     }
 };
 
