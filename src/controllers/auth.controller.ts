@@ -1,0 +1,67 @@
+import type {Request, Response} from "express";
+import {prisma} from "../../prisma/db";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+    isRefreshTokenExpiredOrInvalid,
+    validatePassword,
+    Payload
+} from "../utils/auth";
+import * as process from "process";
+import {JwtPayload} from "jsonwebtoken";
+
+export const signIn = async (req: Request, res: Response) => {
+    const {email, password} = req.body
+
+    // check if user exist
+    const existingUser = await prisma.user.findUnique(
+        {
+            where: {
+                email: email,
+            },
+        }
+    )
+    if (!existingUser) return res.status(400).json({message: "Email or incorrect password"});
+
+    const isPasswordValid = await validatePassword(password, existingUser.password)
+
+    if (!isPasswordValid) return res.status(400).json({message: "Email or incorrect password"});
+
+    const tokens = await setTokens(existingUser.id, res)
+
+    return res.status(200).json({tokens})
+}
+
+const setTokens = async (id: string, res: Response): Promise<{accessToken : string, refreshToken: string}> => {
+    const accessToken = await generateAccessToken(id)
+    const refreshToken = await generateRefreshToken(id)
+
+    res.cookie('Authorization', `Bearer ${accessToken}`, { httpOnly: true, maxAge: parseInt(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000 });
+    res.cookie('Refresh', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRATION_TIME) * 1000 });
+
+    return {accessToken, refreshToken}
+}
+
+export const logout = async (req: Request, res: Response) => {
+    res.clearCookie('Authorization');
+    res.clearCookie('Refresh');
+    res.status(200)
+}
+
+export const refresh = async (req: Request, res: Response)=> {
+    let refreshToken = req.cookies['Refresh']
+
+    const refreshPayload = await isRefreshTokenExpiredOrInvalid(refreshToken);
+
+    if (!refreshToken || !refreshPayload) {
+        res.clearCookie('Authorization');
+        res.clearCookie('Refresh');
+        return res.sendStatus(403);
+    }
+
+    await logout(req, res)
+
+    const tokens = await setTokens(refreshPayload.id, res)
+
+    return res.status(200).json({tokens})
+}

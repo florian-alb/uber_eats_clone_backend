@@ -1,4 +1,11 @@
 import {prisma} from "../../prisma/db";
+import bcrypt from "bcrypt";
+
+export type UserForm = {
+    email: string,
+    password: string
+    name: string
+}
 
 // getAllUsers
 export const getAllUsers = async (req: any, res: any) => {
@@ -38,13 +45,20 @@ export const getUserById = async (req: any, res: any) => {
     }
 };
 
-
 // createUser
 export const createUser = async (req: any, res: any) => {
     try {
-        const userData = req.body
+        const userData: UserForm = req.body;
+
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(userData.password, salt);
+
         const user = await prisma.user.create({
-            data: userData,
+            data: {
+                name: userData.name,
+                email: userData.email,
+                password: hashedPassword
+            }
         })
         res.status(201).json({data: user})
     } catch (e) {

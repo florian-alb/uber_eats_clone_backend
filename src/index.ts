@@ -9,11 +9,14 @@ import shopRouter from "./router/shop.router";
 import reviewRouter from "./router/review.router";
 import userRouter from "./router/user.router";
 import orderRouter from "./router/order.router";
+import authRouter from "./router/auth.router";
+import cookieParser from "cookie-parser";
 
 
 const app = express()
 const port = process.env.PORT || 8080;
 app.use(cors())
+app.use(cookieParser())
 
 // import Page
 app.use(express.json())
@@ -25,6 +28,7 @@ app.use('/product/', productRouter)
 app.use('/shop/', shopRouter)
 app.use('/review/', reviewRouter)
 app.use('/user/', userRouter)
+app.use('/auth/', authRouter)
 
 app.get('/', (req, res) => {
     res.send('Test API')
