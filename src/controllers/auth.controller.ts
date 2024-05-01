@@ -48,7 +48,7 @@ const setTokens = async (id: string, res: Response): Promise<{ accessToken: stri
 export const logout = async (res: Response) => {
     res.clearCookie('Authorization');
     res.clearCookie('Refresh');
-    res.status(200)
+    return res.status(200).redirect('/login');
 }
 
 export const refresh = async (req: Request, res: Response) => {
