@@ -5,22 +5,16 @@ import {
     generateRefreshToken,
     isRefreshTokenExpiredOrInvalid,
     validatePassword,
-    Payload
 } from "../utils/auth";
-import * as process from "process";
+import {getUserByEmail} from "../services/user.services";
 
 export const signIn = async (req: Request, res: Response) => {
     const {email, password} = req.body
 
     try {
         // check if user exist
-        const existingUser = await prisma.user.findUnique(
-            {
-                where: {
-                    email: email,
-                },
-            }
-        )
+        const existingUser = await getUserByEmail(email);
+
         if (!existingUser) return res.status(400).json({message: "Email or incorrect password"});
 
         const isPasswordValid = await validatePassword(password, existingUser.password)
@@ -51,7 +45,7 @@ const setTokens = async (id: string, res: Response): Promise<{ accessToken: stri
     return {accessToken, refreshToken}
 }
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (res: Response) => {
     res.clearCookie('Authorization');
     res.clearCookie('Refresh');
     res.status(200)
@@ -68,7 +62,7 @@ export const refresh = async (req: Request, res: Response) => {
         return res.sendStatus(403);
     }
 
-    await logout(req, res)
+    await logout(res)
 
     const tokens = await setTokens(refreshPayload.id, res)
 

@@ -46,7 +46,8 @@ model Menu {
 model User {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String    @unique
-  name      String
+  firstName String
+  lastName  String
   password  String
   money     Decimal?
   role      Role      @default(USER)
