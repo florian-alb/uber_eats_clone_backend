@@ -15,7 +15,12 @@ import cookieParser from "cookie-parser";
 
 const app = express()
 const port = process.env.PORT || 8080;
-app.use(cors())
+
+app.use(cors({
+    origin: 'http://localhost:5173', // frontend origin
+    credentials: true, // allows cookies to be sent and received
+}));
+
 app.use(cookieParser())
 
 // import Page
