@@ -23,7 +23,7 @@ app.use(cors({
 
 app.use(cookieParser())
 
-// import Page
+// import Pagex
 app.use(express.json())
 app.use('/address/', addressRouter)
 app.use('/category/', categoryRouter)

@@ -29,13 +29,11 @@ export const getShopById = async (req: any, res: any) => {
                 products: true,
             }
         });
-        console.log(shop)
         if (!shop) {
             res.status(404).json({message: `The shop with ID ${id} does not exist`});
         }
         res.status(200).json({data: shop});
     } catch (e) {
-        console.log(e)
         res.status(500).json({error: e, message: `An error occurred while fetching the shop with ID ${id}`});
     }
 };
@@ -49,13 +47,11 @@ export const getShopByCategoryId = async (req: any, res: any) => {
                 categoryId: categoryId
             },
         });
-        console.log(shop)
         if (!shop) {
             res.status(404).json({message: `Not found`});
         }
         res.status(200).json({data: shop});
     } catch (e) {
-        console.log(e)
         res.status(500).json({error: e, message: `An error occurred while fetching the shops for category ${categoryId}`});
     }
 };
@@ -64,7 +60,6 @@ export const getShopByCategoryId = async (req: any, res: any) => {
 export const createShop = async (req: any, res: any) => {
     try {
         const data = req.body
-        console.log(data)
         const shop = await prisma.shop.create({
             data
         })
