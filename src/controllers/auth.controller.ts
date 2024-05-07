@@ -67,5 +67,5 @@ export const refresh = async (req: Request, res: Response) => {
 
     const tokens = await setTokens(refreshPayload.id, res)
 
-    return res.status(200).json({tokens})
+    return res.status(200).json(tokens)
 }

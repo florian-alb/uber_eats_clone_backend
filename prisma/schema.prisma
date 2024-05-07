@@ -58,16 +58,12 @@ model User {
 }
 
 model Address {
-  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String  @db.VarChar(255)
-  address    String
-  postalCode String
-  city       String
-  country    String
-  userId     String? @db.Uuid
-  User       User?   @relation(fields: [userId], references: [id])
-  Order      Order[]
-  shop       Shop[]
+  id      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  address String  @db.VarChar(255)
+  userId  String? @db.Uuid
+  User    User?   @relation(fields: [userId], references: [id])
+  Order   Order[]
+  shop    Shop[]
 }
 
 model Category {
@@ -81,7 +77,7 @@ model Order {
   id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt         DateTime  @default(now())
   deliveryAddressId String    @db.Uuid
-  isDelivred        Boolean   @default(false)
+  isDelivered       Boolean   @default(false)
   userId            String    @db.Uuid
   shopId            String    @db.Uuid
   deliveryAddress   Address   @relation(fields: [deliveryAddressId], references: [id])

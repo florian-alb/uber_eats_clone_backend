@@ -8,7 +8,7 @@ export const getAllCategory = async (req: any, res: any) => {
                shop: true,
            }
         })
-        res.status(200).json({data: allCategory})
+        res.status(200).json(allCategory)
     } catch (e) {
         res.status(501).json({error: e, message: "error during getting the category"})
     }
@@ -43,7 +43,7 @@ export const createCategory = async (req: any, res: any) => {
         const category = await prisma.category.create({
             data: categoryData,
         })
-        res.status(201).json({data: category})
+        res.status(201).json(category)
     } catch (e) {
         res.status(501).json({error: e, message: "error while creating a new category"})
     }
@@ -60,7 +60,7 @@ export const updateCategory = async (req: any, res: any) => {
             },
             data: categoryData,
         })
-        res.status(200).json({data: category})
+        res.status(200).json(category)
     } catch (e) {
         res.status(501).json({error: e, message: "error while updating the category"})
     }
@@ -75,7 +75,7 @@ export const deleteCategory = async (req: any, res: any) => {
                 id: categoryId,
             }
         })
-        res.status(200).json({})
+        res.status(200).json()
     } catch (e) {
         res.status(501).json({error: e, message: "error while deleting the category"})
     }
