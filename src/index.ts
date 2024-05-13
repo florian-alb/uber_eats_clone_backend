@@ -12,7 +12,6 @@ import orderRouter from "./router/order.router";
 import authRouter from "./router/auth.router";
 import cookieParser from "cookie-parser";
 
-
 const app = express()
 const port = process.env.PORT || 8080;
 
