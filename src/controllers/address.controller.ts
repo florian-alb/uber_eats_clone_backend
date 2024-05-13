@@ -33,6 +33,7 @@ export const getAddressById = async (req: any, res: any) => {
 export const createAddress = async (req: any, res: any) => {
     try {
         const addressData = req.body
+
         const address = await prisma.address.create({
             data: addressData,
         })
