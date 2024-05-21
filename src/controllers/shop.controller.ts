@@ -33,6 +33,17 @@ export const getShopById = async (req: any, res: any) => {
             include: {
                 Category: true,
                 products: true,
+                orders: {
+                    include: {
+                        deliveryAddress: true,
+                        customer: true,
+                        orderProducts: {
+                            include: {
+                                product: true
+                            }
+                        }
+                    }
+                }
             }
         });
         if (!shop) {
