@@ -30,16 +30,8 @@ model Product {
   price         Decimal
   menuId        String?        @db.Uuid
   shopId        String?        @db.Uuid
-  menu          Menu?          @relation(fields: [menuId], references: [id])
   shop          Shop?          @relation(fields: [shopId], references: [id])
   orderProducts OrderProduct[]
-}
-
-model Menu {
-  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name     String    @db.VarChar(255)
-  image    String?
-  products Product[]
 }
 
 model User {
