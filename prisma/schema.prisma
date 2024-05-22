@@ -15,10 +15,10 @@ model Shop {
   categoryId String?   @db.Uuid
   orders     Order[]
   products   Product[]
-  reviews    Review[]
   address    Address?  @relation(fields: [addressId], references: [id])
-  Category   Category? @relation(fields: [categoryId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id])
   users      User[]
+  Review     Review[]
 }
 
 model Product {
@@ -28,6 +28,8 @@ model Product {
   image         String?
   description   String?
   price         Decimal
+  reviews       Review[]
+  isPublished   Boolean        @default(false)
   menuId        String?        @db.Uuid
   shopId        String?        @db.Uuid
   shop          Shop?          @relation(fields: [shopId], references: [id])
@@ -59,7 +61,7 @@ model Address {
 
 model Category {
   id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name String @db.VarChar(255)
+  name String @unique @db.VarChar(255)
   icon String
   shop Shop[]
 }
@@ -78,11 +80,13 @@ model Order {
 }
 
 model Review {
-  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  rating Float
-  review String
-  shopID String @db.Uuid
-  shop   Shop   @relation(fields: [shopID], references: [id])
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rating    Float
+  review    String
+  shopID    String   @db.Uuid
+  shop      Shop     @relation(fields: [shopID], references: [id])
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.Uuid
 }
 
 model OrderProduct {

@@ -31,7 +31,7 @@ export const getShopById = async (req: any, res: any) => {
                 id,
             },
             include: {
-                Category: true,
+                category: true,
                 products: true,
                 orders: {
                     include: {
@@ -71,20 +71,38 @@ export const createShop = async (req: any, res: any) => {
 
 // updateShop
 export const updateShop = async (req: any, res: any) => {
+    const { id } = req.params;
+    const shopData = req.body;
+    const { category } = req.body;
+
     try {
-        const shopId = req.params.id
-        const shopData = req.body
-        const shop = await prisma.shop.update({
+        const newCategory = await prisma.category.findUnique({
             where: {
-                id: shopId,
+                name: category,
             },
+        });
+
+        if (!newCategory) {
+            return res.status(404).json({ error: "Category not found" });
+        }
+
+        shopData.categoryId = newCategory.id;
+        delete shopData.category;
+
+        // Mettez à jour le shop avec les nouvelles données
+        const updatedShop = await prisma.shop.update({
+            where: { id },
             data: shopData,
-        })
-        res.status(200).json(shop)
+        });
+
+        // Retournez le shop mis à jour
+        res.status(200).json(updatedShop);
     } catch (e) {
-        res.status(501).json({error: e, message: "error while updating the shop"})
+        console.error(e);
+        res.status(500).json({ error: e.message, message: "Error while updating the shop" });
     }
-}
+};
+
 
 // deleteShop
 export const deleteShop = async (req: any, res: any) => {

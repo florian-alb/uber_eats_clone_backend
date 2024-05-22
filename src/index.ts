@@ -3,7 +3,6 @@ import cors from "cors";
 
 import addressRouter from "./router/address.router";
 import categoryRouter from "./router/category.router";
-import menuRouter from "./router/menu.router";
 import productRouter from "./router/product.router";
 import shopRouter from "./router/shop.router";
 import reviewRouter from "./router/review.router";
@@ -25,7 +24,6 @@ app.use(cookieParser())
 app.use(express.json())
 app.use('/address/', addressRouter)
 app.use('/category/', categoryRouter)
-app.use('/menu/', menuRouter)
 app.use('/order/', orderRouter)
 app.use('/product/', productRouter)
 app.use('/shop/', shopRouter)
