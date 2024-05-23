@@ -58,8 +58,9 @@ export const getShopById = async (req: any, res: any) => {
 
 // createShop
 export const createShop = async (req: any, res: any) => {
+    const data = req.body
+    console.log("data", data)
     try {
-        const data = req.body
         const shop = await prisma.shop.create({
             data
         })
@@ -71,9 +72,9 @@ export const createShop = async (req: any, res: any) => {
 
 // updateShop
 export const updateShop = async (req: any, res: any) => {
-    const { id } = req.params;
+    const {id} = req.params;
     const shopData = req.body;
-    const { category } = req.body;
+    const {category} = req.body;
 
     try {
         const newCategory = await prisma.category.findUnique({
@@ -83,7 +84,7 @@ export const updateShop = async (req: any, res: any) => {
         });
 
         if (!newCategory) {
-            return res.status(404).json({ error: "Category not found" });
+            return res.status(404).json({error: "Category not found"});
         }
 
         shopData.categoryId = newCategory.id;
@@ -91,7 +92,7 @@ export const updateShop = async (req: any, res: any) => {
 
         // Mettez à jour le shop avec les nouvelles données
         const updatedShop = await prisma.shop.update({
-            where: { id },
+            where: {id},
             data: shopData,
         });
 
@@ -99,7 +100,7 @@ export const updateShop = async (req: any, res: any) => {
         res.status(200).json(updatedShop);
     } catch (e) {
         console.error(e);
-        res.status(500).json({ error: e.message, message: "Error while updating the shop" });
+        res.status(500).json({error: e.message, message: "Error while updating the shop"});
     }
 };
 
