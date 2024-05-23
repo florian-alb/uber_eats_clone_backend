@@ -46,9 +46,9 @@ export const createProduct = async (req: any, res: any) => {
 
 // updateProduct
 export const updateProduct = async (req: any, res: any) => {
+    const productId = req.params.id
+    const productData = req.body
     try {
-        const productId = req.params.id
-        const productData = req.body
         const product = await prisma.product.update({
             where: {
                 id: productId,
@@ -61,17 +61,27 @@ export const updateProduct = async (req: any, res: any) => {
     }
 }
 
-// deleteProduct
-export const deleteProduct = async (req: any, res: any) => {
+// archiveProduct
+export const archiveProduct = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const productId = req.params.id
-        await prisma.product.delete({
-            where: {
-                id: productId,
-            }
-        })
-        res.status(200).json({})
-    } catch (e) {
-        res.status(501).json({error: e, message: "error while deleting the product"})
+        const product = await prisma.product.findUnique({
+            where: { id },
+        });
+
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        const updatedProduct = await prisma.product.update({
+            where: { id },
+            data: { isPublished: !product.isPublished },
+        });
+
+        res.json(updatedProduct);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while archiving the product' });
     }
-}
+};

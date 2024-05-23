@@ -1,4 +1,5 @@
 import type {Request, Response} from "express";
+import {prisma} from "../../prisma/db";
 import {
     generateAccessToken,
     generateRefreshToken,
@@ -44,11 +45,11 @@ const setTokens = async (id: string, res: Response): Promise<{ accessToken: stri
     return {accessToken, refreshToken}
 }
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
-    res.clearCookie('Authorization' )
-    res.clearCookie('Refresh' )
-    res.status(200).json('User Logged out')
-};
+export const logout = async (req: Request, res: any) => {
+    res.clearCookie('Authorization');
+    res.clearCookie('Refresh');
+    return res.status(200);
+}
 
 export const refresh = async (req: Request, res: Response) => {
     let refreshToken = req.cookies['Refresh']
@@ -66,5 +67,5 @@ export const refresh = async (req: Request, res: Response) => {
 
     const tokens = await setTokens(refreshPayload.id, res)
 
-    return res.status(200).json({tokens})
+    return res.status(200).json(tokens)
 }

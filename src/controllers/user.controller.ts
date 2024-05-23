@@ -31,8 +31,9 @@ export const getUserById = async (req: any, res: any) => {
                 shop: true,
             }
         })
+        delete user.password;
         if (user) {
-            res.status(200).json({data: user});
+            res.status(200).json({user});
         } else {
             res.status(404).json({message: `The user with ID ${userId} does not exist`});
         }
@@ -61,7 +62,8 @@ export const createUser = async (req: Request, res: Response) => {
                 lastName: lastName,
             }
         })
-        res.status(201).json({data: user})
+        delete user.password;
+        res.status(201).json(user)
     } catch (e) {
         res.status(501).json({error: e, message: "Error while creating a new user"})
     }
@@ -78,7 +80,8 @@ export const updateUser = async (req: any, res: any) => {
             },
             data: userData,
         })
-        res.status(200).json({data: user})
+        delete user.password
+        res.status(200).json(user)
     } catch (e) {
         res.status(501).json({error: e, message: "error while updating the user"})
     }

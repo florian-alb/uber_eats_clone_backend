@@ -1,18 +1,15 @@
 import {Router} from "express";
 
 import {
-    getAllShops,
     createShop,
     deleteShop,
     updateShop,
-    getShopById,
-    getShopByCategoryId
+    getShopById, getShops,
 } from "../controllers/shop.controller";
 
 const ShopRouter = Router()
 
-ShopRouter.get('/', getAllShops)
-ShopRouter.get('/category/:id', getShopByCategoryId)
+ShopRouter.get('/', getShops)
 ShopRouter.get("/:id", getShopById)
 ShopRouter.post('/', createShop)
 ShopRouter.put("/:id", updateShop)

@@ -4,15 +4,35 @@ import {prisma} from "../../prisma/db";
 export const getAllOrders = async (req: any, res: any) => {
     try {
         const allOrders = await prisma.order.findMany({
-            include : {
-                products: true,
+            include: {
+                orderProducts: true,
                 shop: true,
                 customer: true
             }
         })
-        res.status(200).json({data: allOrders})
+        res.status(200).json(allOrders)
     } catch (e) {
         res.status(501).json({error: e, message: "error during getting the orders"})
+    }
+}
+
+export const getOrdersByShopId = async (req: any, res: any) => {
+    const shopId = req.param.shopId
+
+    try {
+        const data = await prisma.order.findMany({
+            where: {
+                shopId: shopId
+            },
+            include: {
+                orderProducts: true,
+                shop: true,
+                customer: true
+            }
+        })
+        res.status(200).json(data)
+    } catch (e: any) {
+        res.status(501).json({error: e.message, message: "error during getting the orders"})
     }
 }
 
@@ -24,19 +44,22 @@ export const getOrderById = async (req: any, res: any) => {
             where: {
                 id: orderId,
             },
-            include : {
-                products: true,
+            include: {
+                orderProducts: true,
                 shop: true,
                 customer: true
             }
         })
         if (order) {
-            res.status(200).json({data: order});
+            res.status(200).json(order);
         } else {
             res.status(404).json({message: `The order with ID ${orderId} does not exist`});
         }
     } catch (e) {
-        res.status(500).json({error: e, message: `An error occurred while fetching the order with ID ${req.params.id}`});
+        res.status(500).json({
+            error: e,
+            message: `An error occurred while fetching the order with ID ${req.params.id}`
+        });
     }
 };
 
