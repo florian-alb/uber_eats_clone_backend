@@ -16,6 +16,20 @@ const port = process.env.PORT || 8080;
 
 app.use(cors({
     origin: ['http://localhost:5173' , 'https://uber-eats-clone-frontend.vercel.app/'], // frontend origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'x-forwarded-for',
+        'x-forwarded-proto',
+        'trpc-batch-mode',
+        'x-forwarded-host',
+        'upgrade-insecure-requests',
+        'x-trpc-source',
+        'accept',
+        'cache-control',
+        'x-forwarded-port',
+    ],
     credentials: true, // allows cookies to be sent and received
 }));
 
