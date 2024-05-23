@@ -15,7 +15,7 @@ const app = express()
 const port = process.env.PORT || 8080;
 
 app.use(cors({
-    origin: 'http://localhost:5173', // frontend origin
+    origin: ['http://localhost:5173' , 'uber-eats-clone-frontend.vercel.app'], // frontend origin
     credentials: true, // allows cookies to be sent and received
 }));
 
