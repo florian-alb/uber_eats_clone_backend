@@ -7,7 +7,7 @@
     "dev": "ts-node src/index.ts",
     "build": "tsc --outDir build",
     "serve": "concurrently --kill-others 'tsc --watch' 'nodemon ./tmp/server.js '",
-    "start": "node build/server.js"
+    "start": "node build/src/index.js"
   },
   "keywords": [],
   "author": "",
