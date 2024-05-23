@@ -1,4 +1,7 @@
 import {prisma} from "../../prisma/db";
+import {Request, Response} from "express";
+import {getUserByEmail} from "../services/user.services";
+import bcrypt from "bcrypt";
 
 // getAllUsers
 export const getAllUsers = async (req: any, res: any) => {
@@ -38,17 +41,29 @@ export const getUserById = async (req: any, res: any) => {
     }
 };
 
-
 // createUser
-export const createUser = async (req: any, res: any) => {
+export const createUser = async (req: Request, res: Response) => {
+    const {firstName, lastName, email, password} = req.body
+    // check if the user already exists
+    const existingUser = await getUserByEmail(email);
+
+    if (existingUser) return res.status(400).json({message: "User already exists"})
+
     try {
-        const userData = req.body
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, salt);
+
         const user = await prisma.user.create({
-            data: userData,
+            data: {
+                email: email,
+                password: hashedPassword,
+                firstName: firstName,
+                lastName: lastName,
+            }
         })
         res.status(201).json({data: user})
     } catch (e) {
-        res.status(501).json({error: e, message: "error while creating a new user"})
+        res.status(501).json({error: e, message: "Error while creating a new user"})
     }
 }
 
