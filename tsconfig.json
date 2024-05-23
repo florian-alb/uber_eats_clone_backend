@@ -13,7 +13,9 @@
     "pretty": true,
     "sourceMap": true,
     "declaration": true,
-    "outDir": "./dist",
+    "outDir": "./tmp",
+    "rootDir": "./",
+
     "allowJs": true,
     "noEmit": false,
     "esModuleInterop": true,

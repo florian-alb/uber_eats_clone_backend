@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc --outDir build",
-    "serve": "concurrently --kill-others 'tsc --watch' 'nodemon ./tmp/server.js '",
-    "start": "node build/src/index.js"
+    "serve": "concurrently --kill-others \"tsc --watch\" \"nodemon ./tmp/index.js \"",
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.11.30",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.0",
     "prisma": "^5.12.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
