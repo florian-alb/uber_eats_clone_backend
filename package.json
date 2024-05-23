@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc --outDir build",
-    "serve": "concurrently --kill-others \"tsc --watch\" \"nodemon ./tmp/index.js \"",
-    "start": "node build/index.js"
+    "serve": "concurrently --kill-others \"tsc --watch\" \"nodemon ./tmp/src/index.js \"",
+    "start": "node build/src/index.js"
   },
   "keywords": [],
   "author": "",
