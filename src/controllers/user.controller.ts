@@ -11,7 +11,7 @@ export const getAllUsers = async (req: any, res: any) => {
                 orders: true
             }
         })
-        res.status(200).json({data: allUsers})
+        res.status(200).json(allUsers)
     } catch (e) {
         res.status(501).json({error: e, message: "error during getting the users"})
     }
